@@ -6,6 +6,7 @@ import android.util.Log;
 import com.ds.c1.ringtopology.MainActivity;
 import com.ds.c1.ringtopology.adapter.DevicesAdapter;
 import com.ds.c1.ringtopology.ring.RingManager;
+import com.ds.c1.ringtopology.tokenpassing.TokenManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +55,11 @@ public class NetworkListener {
                                 case "DISCONNECT":
                                     RingManager.acceptDisconnection(senderIP, adapter);
                                     break;
+                                case "TOKEN":
+                                    int token = root.getInt("token");
+                                    MainActivity.setToken(token);
+                                    TokenManager.sendToken(token + 1);
+                                    MainActivity.setToken(token + 1);
                             }
                         } catch (IOException e) {
                             Log.e(logName, "Failed to receive object", e);

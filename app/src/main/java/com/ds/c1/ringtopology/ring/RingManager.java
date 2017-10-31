@@ -23,14 +23,7 @@ public class RingManager {
 
     public static void acceptConnection(String IP, DevicesAdapter adapter) {
         if (adapter.getItemCount() >= 1) {
-            MainActivity.mainActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(MainActivity.mainActivity,
-                            "Already connected to next device in network",
-                            Toast.LENGTH_SHORT).show();
-                }
-            });
+            MainActivity.toast("Already connected to next device in network");
             return;
         }
         adapter.addDevice(IP);

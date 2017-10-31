@@ -34,6 +34,10 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
         }
     }
 
+    public String get(int index) {
+        return this.devices.get(index);
+    }
+
     public DevicesAdapter(Activity act) {
         this.devices = new ArrayList<>();
         this.activity = act;

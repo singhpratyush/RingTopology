@@ -10,10 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ds.c1.ringtopology.adapter.DevicesAdapter;
 import com.ds.c1.ringtopology.network.NetworkListener;
 import com.ds.c1.ringtopology.ring.RingManager;
+import com.ds.c1.ringtopology.tokenpassing.TokenManager;
 import com.ds.c1.ringtopology.utils.IPAddress;
 
 import org.json.JSONException;
@@ -26,11 +28,13 @@ public class MainActivity extends AppCompatActivity {
     Button addIPButton;
     EditText addIPText;
     RecyclerView devicesRV;
-    RecyclerView.Adapter devicesRVAdapter;
+    public static RecyclerView.Adapter devicesRVAdapter;
     RecyclerView.LayoutManager devicesRVLayoutManager;
     static TextView connectionCountSent, connectionCountRecv;
     static int numConnectionsSent = 0, numConnectionsRecv = 0;
     public static Activity mainActivity;
+    static TextView tokenDisplay;
+    Button tokenStartButton;
     static String logName = "Main Activity";
 
     @Override
@@ -55,6 +59,21 @@ public class MainActivity extends AppCompatActivity {
         connectionCountSent.setText("Sent: 0");
         connectionCountRecv.setText("Received: 0");
 
+        // Token actions
+        tokenDisplay = (TextView) findViewById(R.id.current_token_value);
+        tokenDisplay.setText("Token: Null");
+        tokenStartButton = (Button) findViewById(R.id.start_token_passing_button);
+        tokenStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tokenDisplay.setText("Token: 0");
+                try {
+                    TokenManager.startTokenPassing();
+                } catch (JSONException | InterruptedException e) {
+                    Log.e(logName, "Error while starting token passing", e);
+                }
+            }
+        });
 
         // What happens on clicking the connect button
         addIPButton.setOnClickListener(new View.OnClickListener() {
@@ -103,5 +122,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static void setToken(final int value) {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tokenDisplay.setText("Token: " + value);
+            }
+        });
+    }
+
+    public static void toast(final String text) {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mainActivity,
+                        text,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        return;
     }
 }
