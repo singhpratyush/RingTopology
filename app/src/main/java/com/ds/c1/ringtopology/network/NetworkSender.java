@@ -36,7 +36,7 @@ public class NetworkSender {
                     s.close();
                     Log.i(logName, "Sent message to " + IP + " : " +  message.toString());
                 } catch (IOException e) {
-                    Log.e("NetworkSender", "Failed to send the message " + message, e);
+                    Log.e("NetworkSender", "Failed to send the message to " + IP + " : " + message, e);
                 }
             }
         };
