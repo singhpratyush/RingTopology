@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.LayoutManager devicesRVLayoutManager;
     static TextView connectionCountSent, connectionCountRecv;
     static int numConnectionsSent = 0, numConnectionsRecv = 0;
-    static Activity mainActivity;
+    public static Activity mainActivity;
     static String logName = "Main Activity";
 
     @Override

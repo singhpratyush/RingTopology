@@ -29,8 +29,8 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHold
         public Button disconnectButton;
         public ViewHolder(View v) {
             super(v);
-            this.deviceName = (TextView) v.findViewById(R.id.devices_rv_name);
-            this.disconnectButton = (Button) v.findViewById(R.id.devices_rv_disconnect);
+            this.deviceName = v.findViewById(R.id.devices_rv_name);
+            this.disconnectButton = v.findViewById(R.id.devices_rv_disconnect);
         }
     }
 

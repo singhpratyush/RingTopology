@@ -1,7 +1,7 @@
 package com.ds.c1.ringtopology.ring;
 
 
-import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.ds.c1.ringtopology.MainActivity;
 import com.ds.c1.ringtopology.adapter.DevicesAdapter;
@@ -11,22 +11,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 
 public class RingManager {
 
-    private static HashMap<String, Boolean> connectionStatus = new HashMap<>();
-
 
     public static void requestConnection(String IP) throws IOException, JSONException, InterruptedException {
-        connectionStatus.put(IP, false);
         JSONObject message = new JSONObject();
         NetworkSender.sendMessage(IP, "CONNECT", message);
     }
 
     public static void acceptConnection(String IP, DevicesAdapter adapter) {
-        connectionStatus.put(IP, true);
+        if (adapter.getItemCount() >= 1) {
+            MainActivity.mainActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.mainActivity,
+                            "Already connected to next device in network",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
         adapter.addDevice(IP);
     }
 
@@ -37,8 +43,7 @@ public class RingManager {
     }
 
     public static void acceptDisconnection(String IP, DevicesAdapter adapter) {
-        connectionStatus.put(IP, false);
-        adapter.removeDevice(IP);
+//        adapter.removeDevice(IP);
     }
 
 }

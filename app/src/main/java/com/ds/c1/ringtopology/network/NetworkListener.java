@@ -46,7 +46,7 @@ public class NetworkListener {
                                     JSONObject message = new JSONObject();
                                     message.put("response", "OK");
                                     NetworkSender.sendMessage(senderIP, "CONNECT_REPLY", message);
-                                    RingManager.acceptConnection(senderIP, adapter);
+//                                    RingManager.acceptConnection(senderIP, adapter);
                                     break;
                                 case "CONNECT_REPLY":
                                     RingManager.acceptConnection(senderIP, adapter);
