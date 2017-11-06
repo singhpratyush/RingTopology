@@ -39,4 +39,15 @@ public class RingManager {
 //        adapter.removeDevice(IP);
     }
 
+    public static void toNextNode(String type, JSONObject message) throws JSONException, InterruptedException {
+        String nextIP;
+        try {
+            nextIP = ((DevicesAdapter) MainActivity.devicesRVAdapter).get();
+        } catch (IndexOutOfBoundsException e) {
+            MainActivity.toast("No device connect to the current device in ring");
+            return;
+        }
+        NetworkSender.sendMessage(nextIP, type, message);
+    }
+
 }

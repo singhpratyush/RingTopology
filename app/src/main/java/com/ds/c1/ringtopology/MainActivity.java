@@ -1,6 +1,7 @@
 package com.ds.c1.ringtopology;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.ds.c1.ringtopology.adapter.DevicesAdapter;
 import com.ds.c1.ringtopology.network.NetworkListener;
+import com.ds.c1.ringtopology.ricartagrawala.RicartAgrawala;
 import com.ds.c1.ringtopology.ring.RingManager;
 import com.ds.c1.ringtopology.tokenpassing.TokenManager;
 import com.ds.c1.ringtopology.utils.IPAddress;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     public static Activity mainActivity;
     static TextView tokenDisplay;
     Button tokenStartButton;
+    public static Button requestCriticalSectionButton;
+    public static TextView criticalSectionStatus;
     static String logName = "Main Activity";
 
     @Override
@@ -71,6 +75,20 @@ public class MainActivity extends AppCompatActivity {
                     TokenManager.startTokenPassing();
                 } catch (JSONException | InterruptedException e) {
                     Log.e(logName, "Error while starting token passing", e);
+                }
+            }
+        });
+
+        // Critical section
+        requestCriticalSectionButton = (Button) findViewById(R.id.request_critical_section);
+        criticalSectionStatus = (TextView) findViewById(R.id.critical_status);
+        requestCriticalSectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    RicartAgrawala.requestCriticalSection();
+                } catch (JSONException | InterruptedException e) {
+                    Log.e(logName, "Unable to enter critical section", e);
                 }
             }
         });
@@ -144,4 +162,34 @@ public class MainActivity extends AppCompatActivity {
         });
         return;
     }
+
+    public static void markCriticalSectionPending() {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                criticalSectionStatus.setBackgroundColor(Color.BLUE);
+                requestCriticalSectionButton.setEnabled(false);
+            }
+        });
+    }
+
+    public static void markCriticalSectionEnter() {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                criticalSectionStatus.setBackgroundColor(Color.RED);
+            }
+        });
+    }
+
+    public static void markCriticalSectionLeave() {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                criticalSectionStatus.setBackgroundColor(Color.GREEN);
+                requestCriticalSectionButton.setEnabled(true);
+            }
+        });
+    }
+
 }

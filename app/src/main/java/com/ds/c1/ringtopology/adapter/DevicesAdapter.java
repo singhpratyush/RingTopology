@@ -20,22 +20,22 @@ import java.util.ArrayList;
 
 
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.ViewHolder> {
-    public ArrayList<String> devices;
+    private ArrayList<String> devices;
     private static String logname = "DeviceRecyclerViewAdapter";
     private Activity activity;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView deviceName;
-        public Button disconnectButton;
-        public ViewHolder(View v) {
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView deviceName;
+        Button disconnectButton;
+        ViewHolder(View v) {
             super(v);
             this.deviceName = v.findViewById(R.id.devices_rv_name);
             this.disconnectButton = v.findViewById(R.id.devices_rv_disconnect);
         }
     }
 
-    public String get(int index) {
-        return this.devices.get(index);
+    public String get() {
+        return this.devices.get(0);
     }
 
     public DevicesAdapter(Activity act) {
